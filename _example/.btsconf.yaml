@@ -1,0 +1,5 @@
+core:
+  Debug: true
+  DBTableHeaderForegroundColour: "blue"
+  DBTableHeaderBackgroundColour: "white"
+
