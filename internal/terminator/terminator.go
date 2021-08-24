@@ -7,6 +7,13 @@ import (
 	"os"
 )
 
+var (
+	// Config Keys
+	DBTableHeaderBackgroundColourConfigKey = "core.DBTableHeaderBackgroundColour"
+	DBTableHeaderForegroundColourConfigKey = "core.DBTableHeaderForegroundColour"
+)
+
+// NewTableOutput provides a new tableprinter.Printer
 func NewTableOutput() *tableprinter.Printer {
 	printer := tableprinter.New(os.Stdout)
 
@@ -22,8 +29,8 @@ func NewTableOutput() *tableprinter.Printer {
 }
 
 func setDBTableHeaderColour() (int, int) {
-	backColour := viper.GetString("core.DBTableHeaderBackgroundColour")
-	foreColour := viper.GetString("core.DBTableHeaderForegroundColour")
+	backColour := viper.GetString(DBTableHeaderBackgroundColourConfigKey)
+	foreColour := viper.GetString(DBTableHeaderForegroundColourConfigKey)
 
 	foreColourMap := map[string]int{
 		"red":     tablewriter.FgRedColor,

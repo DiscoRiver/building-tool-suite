@@ -14,7 +14,7 @@ var (
 		Use:   "parsesomequery",
 		Short: "Print out the bytes of the provided file.",
 		Run: func(cmd *cobra.Command, args []string) {
-			parseSomeDBQueryFlags.GetSomeFile()
+			parseSomeDBQueryFlags.ParseSomeDBQuery()
 		},
 	}
 )

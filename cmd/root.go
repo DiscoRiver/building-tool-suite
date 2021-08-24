@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/discoriver/building-tool-suite/internal/terminator"
 	"github.com/discoriver/building-tool-suite/pkg/log"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -9,18 +10,19 @@ import (
 )
 
 var (
+	// Config keys. I use "core" for program-wide config items.
+	DebugConfigKey              = "core.Debug"
+
 	// Custom config?
 	configFileFlag string
 
-	// Config keys. I use "core" for program-wide config items.
-	DebugConfigKey              = "core.Debug"
-	DBBackgroundColourConfigKey = "core.DBTableHeaderBackgroundColour"
-	DBForegroundColourConfigKey = "core.DBTableHeaderForegroundColour"
+	// Hold debug log value so we can assign it properly
+	debugLogs = false
 
 	rootCmd = &cobra.Command{
 		Use:   "bts",
-		Short: "building-tool-suite (bit) is a sample program outlining the design of internals tools.",
-		Long:  "building-tool-suite (bit) is a sample program outlining the design of internals tools into an easy-to-understand and maintainable package.",
+		Short: "building-tool-suite (bts) is a sample program outlining the design of internals tools.",
+		Long:  "building-tool-suite (bts) is a sample program outlining the design of internals tools into an easy-to-understand and maintainable package.",
 	}
 )
 
@@ -30,16 +32,20 @@ func Execute() error {
 
 func init() {
 	// Get our config before anything else.
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, initLogger)
 
 	rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "Custom bts config")
-	rootCmd.PersistentFlags().BoolVar(&log.Verbose, "debug", false, "Enable debug logging")
+	rootCmd.PersistentFlags().BoolVar(&debugLogs, "debug", false, "Enable debug logging")
 
 	viper.BindPFlag(DebugConfigKey, rootCmd.PersistentFlags().Lookup("debug"))
 
 	// Set config defaults
-	viper.SetDefault(DBForegroundColourConfigKey, "white")
-	viper.SetDefault(DBBackgroundColourConfigKey, "")
+	viper.SetDefault(terminator.DBTableHeaderForegroundColourConfigKey, "white")
+	viper.SetDefault(terminator.DBTableHeaderBackgroundColourConfigKey, "")
+}
+
+func initLogger() {
+	log.Verbose = viper.GetBool(DebugConfigKey)
 }
 
 func initConfig() {

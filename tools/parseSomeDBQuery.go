@@ -10,8 +10,8 @@ type ParseSomeDBQueryCommandFlag struct {
 	ID string
 }
 
-func (cmd *ParseSomeDBQueryCommandFlag) ParseSomeDBQuery(ID string) {
-	rows, err := db.QSomeDBQuery(ID)
+func (cmd *ParseSomeDBQueryCommandFlag) ParseSomeDBQuery() {
+	rows, err := db.QSomeDBQuery(cmd.ID)
 	if err != nil {
 		log.Error("ParseSomeDBQuery:: Couldn't get results: %s", err)
 	}
